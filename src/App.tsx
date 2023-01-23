@@ -4,7 +4,9 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-console.log(123);
+  let testTxt:string = "測試環境建立"
+  console.log(testTxt);
+  
 
   return (
     <div className="App">
