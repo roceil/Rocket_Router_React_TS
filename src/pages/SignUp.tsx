@@ -1,10 +1,20 @@
 import todoLogo from "../image/TodoLogo.svg";
 import loginImg from "../image/LoginImg.svg";
 import SignUpForm from "../container/SignUpForm"
+import { FieldErrors, FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
+
+
+interface FormProps {
+  register: UseFormRegister<FieldValues>
+  errors: FieldErrors<FieldValues>
+  SignUpSubmit:React.FormEventHandler<HTMLFormElement>
+  watch:UseFormWatch<FieldValues>
+}
 
 const container = `container flex items-center justify-center h-full lg:space-x-[106px]`;
 
-const SignUp:React.FC=()=> {
+
+const SignUp:React.FC<FormProps>=({register,errors,SignUpSubmit ,watch})=> {
   return(
     <div className={container}>
     <div className="flex flex-col items-center">
@@ -20,7 +30,7 @@ const SignUp:React.FC=()=> {
       </h2>
 
       {/* 登入用表單 */}
-      <SignUpForm />
+      <SignUpForm register={register} errors={errors} SignUpSubmit={SignUpSubmit} watch={watch}/>
     </div>
   </div>
   )
