@@ -6,7 +6,7 @@ import {
   UseFormWatch
 } from 'react-hook-form'
 
-export interface FormItems {
+interface FormItems {
   labelName: string
   placeholder: string
   type: string
@@ -17,7 +17,7 @@ export interface FormItems {
   watch: UseFormWatch<FieldValues>
   validate?: boolean
 }
-export const FormItems: React.FC<FormItems> = ({
+const FormItems: React.FC<FormItems> = ({
   labelName,
   placeholder,
   type,

@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { useTodoContext } from '../context/todoData'
 
 const url = `https://todoo.5xcamp.us`
 const setToken = (authorization: string) => {
@@ -68,15 +67,17 @@ export const GetTodoData = async () => {
 }
 
 // Todo => POST
-export const AddTodoItem = async () => {
+export const AddTodoItem = async (text:string) => {
+
   try {
     const res = await axios.post(
       `${url}/todos`,
       {
-        content: '456789'
+        content: text
       },
       headerObj
     )
+    return res.data
     // alert('新增成功')
   } catch (error: any) {
     const { data } = error.response
