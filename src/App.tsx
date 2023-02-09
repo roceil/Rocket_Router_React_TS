@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
-import Login from './pages/Login'
-import SignUp from './pages/SignUp'
+import Login from './pages/Login/Index'
+import SignUp from './pages/SignUp/Index'
 import Todo from './pages/Todo/Index'
 import { LoginPost, SignUpPost } from './helpers/API'
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
@@ -8,7 +8,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 
 const queryClient = new QueryClient()
 
-export default function App() {
+export default function App () {
   const {
     register,
     handleSubmit,

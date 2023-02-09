@@ -17,7 +17,7 @@ interface FormItems {
   watch: UseFormWatch<FieldValues>
   validate?: boolean
 }
-const FormItems: React.FC<FormItems> = ({
+export const FormItems: React.FC<FormItems> = ({
   labelName,
   placeholder,
   type,

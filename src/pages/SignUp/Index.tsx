@@ -1,6 +1,6 @@
 import todoLogo from "../image/TodoLogo.svg";
 import loginImg from "../image/LoginImg.svg";
-import SignUpForm from "../container/SignUpForm"
+import SignUpForm from "../../container/SignUpForm"
 import { FieldErrors, FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
 
 

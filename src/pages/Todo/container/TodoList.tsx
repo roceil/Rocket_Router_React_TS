@@ -1,14 +1,21 @@
+import { DeleteAll, GetTodoData } from '../../../helpers/API'
 import { useTodoContext } from '../../../helpers/context/todoData'
 import { ListItem } from '../components/ListItem'
-
 interface TodoAPIProps {
   id: string
   content: string
   completed_at: null | string
 }
 
+
+
 export function TodoList() {
-  const { todo } = useTodoContext()
+  const { todo, setTodo } = useTodoContext()
+  const handleDeleteAll = async () => {
+    await DeleteAll(todo)
+    const res = await GetTodoData()
+    setTodo(res)
+  }
   return (
     <div className='container lg:max-w-[500px]'>
       <ul className='flex bg-white rounded-t-[10px] font-bold text-center'>
@@ -27,7 +34,8 @@ export function TodoList() {
         {todo.map((todoItem: TodoAPIProps, index: number) => {
           return (
             <ListItem
-              key={index}
+              // const { todo, setTodo } = useTodoContext()
+              key={todoItem.id}
               content={todoItem.content}
               id={todoItem.id}
               completed_at={todoItem.completed_at}
@@ -41,7 +49,10 @@ export function TodoList() {
           <span>{todo.length}</span> 個待完成項目
         </li>
         <li>
-          <button className='opacity-50 lg:hover:opacity-100'>
+          <button
+            onClick={handleDeleteAll}
+            className='opacity-50 lg:hover:opacity-100'
+          >
             清除已完成項目
           </button>
         </li>

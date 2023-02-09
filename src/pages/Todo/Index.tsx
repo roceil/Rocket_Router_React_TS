@@ -1,11 +1,10 @@
-import { SetStateAction, useEffect, useState } from 'react'
+import React, { type SetStateAction, useEffect, useState } from 'react'
 import Header from './components/Header'
 import add from '../../image/add.svg'
-import { AddTodoItem, GetTodoData, DeleteAll } from '../../helpers/API'
+import { AddTodoItem, GetTodoData } from '../../helpers/API'
 import { TodoContext } from '../../helpers/context/todoData'
-import { useQuery, useMutation } from 'react-query'
+import { useQuery } from 'react-query'
 import { TodoList } from './container/TodoList'
-
 interface TodoAPIProps {
   id: string
   content: string
@@ -15,11 +14,13 @@ interface TodoAPIProps {
 function Todo() {
   const [todo, setTodo] = useState<TodoAPIProps[]>([])
   const [text, setText] = useState('')
-  const { data } = useQuery('getTodo', GetTodoData, {
+  const { data, refetch } = useQuery('getTodo', GetTodoData, {
     refetchOnWindowFocus: false
   })
 
-  const handleChange = (e: { target: { value: SetStateAction<string> } }) => {
+  const handleChange = (e: {
+    target: { value: SetStateAction<string> }
+  }): void => {
     setText(e.target.value)
   }
   const handleAdd = async () => {
@@ -27,11 +28,7 @@ function Todo() {
     const res = await GetTodoData()
     setTodo(res)
     setText('')
-  }
-  const handleDeleteAll = async () => {
-    await DeleteAll(data)
-    const res = await GetTodoData()
-    setTodo(res)
+    refetch()
   }
 
   useEffect(() => {
@@ -60,13 +57,6 @@ function Todo() {
             <img src={add} alt='add_items' />
           </button>
         </div>
-        <button
-          type='button'
-          className='border p-2 mt-2 bg-white'
-          onClick={handleDeleteAll}
-        >
-          刪除全部
-        </button>
       </div>
 
       <TodoList />
