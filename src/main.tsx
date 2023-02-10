@@ -4,7 +4,7 @@ import App from './App'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <BrowserRouter basename='/Rocket_TODO_NoRouter_React_TS/'>
+  <BrowserRouter>
     <App />
   </BrowserRouter>
 )
