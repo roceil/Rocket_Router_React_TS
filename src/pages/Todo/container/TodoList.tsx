@@ -1,4 +1,4 @@
-import { DeleteAll, GetTodoData } from '../../../helpers/API'
+import { DeleteAll, GetTodoData } from '../../../helpers/API/API'
 import { useTodoContext } from '../../../helpers/context/todoData'
 import { ListItem } from '../components/ListItem'
 interface TodoAPIProps {

@@ -1,7 +1,9 @@
 import LoginForm from "../../container/LoginForm";
-import todoLogo from "../image/TodoLogo.svg";
-import loginImg from "../image/LoginImg.svg";
+import todoLogo from "../../image/TodoLogo.svg";
+import loginImg from "../../image/LoginImg.svg";
 import { UseFormRegister, FieldValues, FieldErrors, UseFormWatch } from "react-hook-form";
+
+
 
 
 
@@ -14,6 +16,7 @@ interface FormProps {
 const container = `container flex items-center justify-center h-full lg:space-x-[106px]`;
 
 const Login: React.FC<FormProps> = ({register,errors,LoginSubmit,watch}) => {
+
   return (
     <div className={container}>
       <div className="flex flex-col items-center">

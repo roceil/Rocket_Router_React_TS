@@ -1,5 +1,5 @@
 import deleteItem_icon from '../../../image/deleteItem.svg'
-import { ChangeStatus, DeleteItem, GetTodoData } from '../../../helpers/API'
+import { ChangeStatus, DeleteItem, GetTodoData } from '../../../helpers/API/API'
 import { useTodoContext } from '../../../helpers/context/todoData'
 
 interface ListProps {

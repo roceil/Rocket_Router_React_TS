@@ -4,18 +4,21 @@ const url = 'https://todoo.5xcamp.us'
 const setToken = (authorization: string): void => {
   localStorage.setItem('authorization', authorization)
 }
-const getToken = localStorage.getItem('authorization')
-const headerObj = {
-  headers: {
-    authorization: getToken
+const getToken = () => {
+  const getToken = localStorage.getItem('authorization')
+  const headerObj = {
+    headers: {
+      authorization: getToken
+    }
   }
+  return headerObj
 }
 
 // Login => POST => getToken => setToken
 export const LoginPost = async (
   email: string,
   password: string
-): Promise<void> => {
+): Promise<number | undefined> => {
   try {
     const res = await axios.post(`${url}/users/sign_in`, {
       user: {
@@ -27,6 +30,7 @@ export const LoginPost = async (
     const { authorization } = await res.headers
     setToken(authorization)
     alert(message)
+    return res.status
   } catch (error) {
     console.log(error)
   }
@@ -37,7 +41,7 @@ export const SignUpPost = async (
   email: string,
   nickname: string,
   password: string
-): Promise<void> => {
+): Promise<number | undefined> => {
   try {
     const res = await axios.post(`${url}/users`, {
       user: {
@@ -50,6 +54,7 @@ export const SignUpPost = async (
     const { authorization } = await res.headers
     setToken(authorization)
     alert(message)
+    return res.status
   } catch (error: any) {
     const { message } = await error.response.data
     alert(message)
@@ -59,8 +64,9 @@ export const SignUpPost = async (
 // Todo => GET
 export const GetTodoData = async () => {
   try {
-    const res = await axios.get(`${url}/todos`, headerObj)
+    const res = await axios.get(`${url}/todos`, getToken())
     const { todos } = await res.data
+    // alert("取得資料中")
     return todos
   } catch (error: any) {
     const { data } = error.response
@@ -77,9 +83,8 @@ export const AddTodoItem = async (text: string) => {
       {
         content: text
       },
-      headerObj
+      getToken()
     )
-    // return res.data
     alert('新增成功')
   } catch (error: any) {
     const { data } = error.response
@@ -91,7 +96,7 @@ export const AddTodoItem = async (text: string) => {
 // Todo => PATCH
 export const ChangeStatus = async (id: string) => {
   try {
-    const res = await axios.patch(`${url}/todos/${id}/toggle`, null, headerObj)
+    const res = await axios.patch(`${url}/todos/${id}/toggle`, null, getToken())
     alert('狀態更改成功')
   } catch (error) {
     console.log(error)
@@ -101,8 +106,7 @@ export const ChangeStatus = async (id: string) => {
 // Todo => DELETE
 export const DeleteItem = async (id: string) => {
   try {
-    const res = await axios.delete(`${url}/todos/${id}`, headerObj)
-    console.log(res)
+    const res = await axios.delete(`${url}/todos/${id}`, getToken())
     alert('已刪除')
   } catch (error) {
     console.log(error)
@@ -117,7 +121,7 @@ export const DeleteAll = async (data: any[]) => {
   )
   return Promise.all(
     idAry.map((idAry: any) => {
-      return axios.delete(`${url}/todos/${idAry.id}`, headerObj)
+      return axios.delete(`${url}/todos/${idAry.id}`, getToken())
     })
   )
 }

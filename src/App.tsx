@@ -1,14 +1,16 @@
 import { useForm } from 'react-hook-form'
-import Login from './pages/Login/Index'
-import SignUp from './pages/SignUp/Index'
-import Todo from './pages/Todo/Index'
-import { LoginPost, SignUpPost } from './helpers/API'
+import Login from './pages/Login/Login'
+import SignUp from './pages/SignUp/SignUp'
+import Todo from './pages/Todo/Todo'
+import { LoginPost, SignUpPost } from './helpers/API/API'
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import ProtectRoute from './components/ProtectRoute'
+import { useEffect } from 'react'
 const queryClient = new QueryClient()
 
-export default function App () {
+export default function App() {
   const {
     register,
     handleSubmit,
@@ -17,25 +19,59 @@ export default function App () {
   } = useForm({
     mode: 'onTouched'
   })
-  const LoginSubmit = handleSubmit((data) => {
+  const navToTodo = useNavigate()
+  const LoginSubmit = handleSubmit(async(data) => {
     const { email, password } = data
-    LoginPost(email, password)
+    const status = await LoginPost(email, password)
+    if(status === 200) navToTodo("todo")
   })
-  const SignUpSubmit = handleSubmit((data) => {
+  const navToLogin = useNavigate()
+  const SignUpSubmit = handleSubmit(async (data) => {
     const { email, nickname, password, confirmPassword } = data
     if (password !== confirmPassword) {
       alert('兩次密碼不一致，請重新輸入')
       return
     }
-    SignUpPost(email, nickname, password)
+    const status = await SignUpPost(email, nickname, password)
+    if (status === 201) navToLogin('/')
   })
 
-  // return <Login register={register} errors={errors} LoginSubmit={LoginSubmit} watch={watch}/>
-  // return <SignUp register={register} errors={errors} SignUpSubmit={SignUpSubmit} watch={watch}/>
   return (
-    <QueryClientProvider client={queryClient} contextSharing={true}>
-      <Todo />
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    <Routes>
+      <Route
+        path='/'
+        element={
+          <Login
+            register={register}
+            errors={errors}
+            LoginSubmit={LoginSubmit}
+            watch={watch}
+          />
+        }
+      />
+
+      <Route
+        path='signup'
+        element={
+          <SignUp
+            register={register}
+            errors={errors}
+            SignUpSubmit={SignUpSubmit}
+            watch={watch}
+          />
+        }
+      />
+<Route element={<ProtectRoute/>}>
+      <Route
+        path='/todo'
+        element={
+          <QueryClientProvider client={queryClient} contextSharing={true}>
+            <Todo />
+            <ReactQueryDevtools />
+          </QueryClientProvider>
+        }
+      />
+</Route>
+    </Routes>
   )
 }

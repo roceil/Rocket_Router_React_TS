@@ -4,8 +4,8 @@ import {
   UseFormRegister,
   UseFormWatch
 } from 'react-hook-form'
-import { FormItems } from './FormItems'
-
+import { FormItems } from '../components/FormItems'
+import { useNavigate } from 'react-router-dom'
 interface FormProps {
   register: UseFormRegister<FieldValues>
   errors: FieldErrors<FieldValues>
@@ -19,6 +19,8 @@ const LoginForm: React.FC<FormProps> = ({
   LoginSubmit,
   watch
 }) => {
+  const nav = useNavigate()
+  const navToSignUp = () => nav('/SignUp')
   return (
     <form
       onSubmit={LoginSubmit}
@@ -62,9 +64,7 @@ const LoginForm: React.FC<FormProps> = ({
       {/* 註冊按鈕 */}
       <button
         type='button'
-        onClick={() => {
-          console.log('跳轉畫面')
-        }}
+        onClick={navToSignUp}
         className='mt-3 font-bold py-3 px-12 rounded-[10px]'
       >
         註冊帳號

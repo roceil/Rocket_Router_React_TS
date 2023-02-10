@@ -1,18 +1,32 @@
 import React from 'react'
-import { FieldErrors, FieldValues, useForm, UseFormRegister, UseFormWatch } from 'react-hook-form'
-import { FormItems } from './FormItems'
-
+import {
+  FieldErrors,
+  FieldValues,
+  UseFormRegister,
+  UseFormWatch
+} from 'react-hook-form'
+import { FormItems } from '../components/FormItems'
+import { useNavigate } from 'react-router-dom'
 
 interface FormProps {
   register: UseFormRegister<FieldValues>
   errors: FieldErrors<FieldValues>
-  SignUpSubmit:React.FormEventHandler<HTMLFormElement>
-  watch:UseFormWatch<FieldValues>
+  SignUpSubmit: React.FormEventHandler<HTMLFormElement>
+  watch: UseFormWatch<FieldValues>
 }
-const SignUpForm: React.FC<FormProps> = ({register,errors,SignUpSubmit,watch}) => {
-
+const SignUpForm: React.FC<FormProps> = ({
+  register,
+  errors,
+  SignUpSubmit,
+  watch
+}) => {
+  const nav = useNavigate()
+  const navToHome = () => nav('/')
   return (
-    <form onSubmit={SignUpSubmit} className='flex flex-col items-center space-y-4'>
+    <form
+      onSubmit={SignUpSubmit}
+      className='flex flex-col items-center space-y-4'
+    >
       {/* Email */}
       <FormItems
         labelName={'Email'}
@@ -20,7 +34,10 @@ const SignUpForm: React.FC<FormProps> = ({register,errors,SignUpSubmit,watch}) =
         type={'text'}
         formType={'email'}
         register={register}
-        rules={{value:/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i,message:"請輸入信箱"}}
+        rules={{
+          value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i,
+          message: '請輸入信箱'
+        }}
         watch={watch}
         errors={errors}
       />
@@ -32,7 +49,10 @@ const SignUpForm: React.FC<FormProps> = ({register,errors,SignUpSubmit,watch}) =
         type={'text'}
         formType={'nickname'}
         register={register}
-        rules={{value:/^[0-9\u4e00-\u9fa5a-zA-Z]{1,10}$/i,message:"請輸入1~10個字的中/英文暱稱"}}
+        rules={{
+          value: /^[0-9\u4e00-\u9fa5a-zA-Z]{1,10}$/i,
+          message: '請輸入1~10個字的中/英文暱稱'
+        }}
         watch={watch}
         errors={errors}
       />
@@ -44,7 +64,7 @@ const SignUpForm: React.FC<FormProps> = ({register,errors,SignUpSubmit,watch}) =
         type={'password'}
         formType={'password'}
         register={register}
-        rules={{value:/^[A-Za-z0-9]{6,}$/i,message:"請輸入6碼以上的密碼"}}
+        rules={{ value: /^[A-Za-z0-9]{6,}$/i, message: '請輸入6碼以上的密碼' }}
         watch={watch}
         errors={errors}
       />
@@ -70,7 +90,12 @@ const SignUpForm: React.FC<FormProps> = ({register,errors,SignUpSubmit,watch}) =
       </button>
 
       {/* 登入按鈕 */}
-      <button className='mt-3 font-bold py-3 px-12 rounded-[10px]'>登入</button>
+      <button
+        onClick={navToHome}
+        className='mt-3 font-bold py-3 px-12 rounded-[10px]'
+      >
+        登入
+      </button>
     </form>
   )
 }
