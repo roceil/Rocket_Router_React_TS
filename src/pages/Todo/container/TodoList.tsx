@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { DeleteAll, GetTodoData } from '../../../helpers/API/API'
 import { useTodoContext } from '../../../helpers/context/todoData'
 import { ListItem } from '../components/ListItem'
@@ -7,10 +8,9 @@ interface TodoAPIProps {
   completed_at: null | string
 }
 
-
-
 export function TodoList() {
-  const { todo, setTodo } = useTodoContext()
+  const { todo, setTodo, dispatchFn, tabPosition } = useTodoContext()
+
   const handleDeleteAll = async () => {
     await DeleteAll(todo)
     const res = await GetTodoData()
@@ -19,22 +19,42 @@ export function TodoList() {
   return (
     <div className='container lg:max-w-[500px]'>
       <ul className='flex bg-white rounded-t-[10px] font-bold text-center'>
-        <li className='w-1/3 py-4 border-b-2 border-black'>
+        <li
+          onClick={() => {
+            dispatchFn({ type: '全部' })
+          }}
+          className={`w-1/3 py-4 border-b-2 cursor-pointer ${
+            tabPosition === '全部' ? 'border-black' : 'border-[#EFEFEF]'
+          }`}
+        >
           <button>全部</button>
         </li>
-        <li className='w-1/3 py-4 border-b-2 border-[#EFEFEF]'>
+        <li
+          onClick={() => {
+            dispatchFn({ type: '待完成' })
+          }}
+          className={`w-1/3 py-4 border-b-2 cursor-pointer ${
+            tabPosition === '待完成' ? 'border-black' : 'border-[#EFEFEF]'
+          }`}
+        >
           <button>待完成</button>
         </li>
-        <li className='w-1/3 py-4 border-b-2 border-[#EFEFEF]'>
+        <li
+          onClick={() => {
+            dispatchFn({ type: '已完成' })
+          }}
+          className={`w-1/3 py-4 border-b-2 cursor-pointer ${
+            tabPosition === '已完成' ? 'border-black' : 'border-[#EFEFEF]'
+          }`}
+        >
           <button>已完成</button>
         </li>
       </ul>
 
       <ul className='bg-white'>
-        {todo.map((todoItem: TodoAPIProps, index: number) => {
+        {todo?.map((todoItem: TodoAPIProps) => {
           return (
             <ListItem
-              // const { todo, setTodo } = useTodoContext()
               key={todoItem.id}
               content={todoItem.content}
               id={todoItem.id}
@@ -44,19 +64,15 @@ export function TodoList() {
         })}
       </ul>
 
-      <ul className='bg-white flex justify-between px-4 py-6 rounded-b-[10px]'>
-        <li>
-          <span>{todo.length}</span> 個待完成項目
-        </li>
-        <li>
-          <button
-            onClick={handleDeleteAll}
-            className='opacity-50 lg:hover:opacity-100'
-          >
-            清除已完成項目
-          </button>
-        </li>
-      </ul>
+      <div className='bg-white flex justify-between px-4 py-6 rounded-b-[10px]'>
+        <span>{todo.length} 個待完成項目</span>
+        <button
+          onClick={handleDeleteAll}
+          className='opacity-50 lg:hover:opacity-100'
+        >
+          清除已完成項目
+        </button>
+      </div>
     </div>
   )
 }

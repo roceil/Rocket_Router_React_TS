@@ -11,18 +11,20 @@ interface ListProps {
 
 export function ListItem({ content, id, completed_at }: ListProps) {
   const checkCompleted = (completed_at ? true : false)
-  const { todo, setTodo } = useTodoContext()
+  const { todo, setTodo,refetch } = useTodoContext()
 
   const deleteItem = async () => {
     await DeleteItem(id)
     const res = await GetTodoData()
     setTodo(res)
+    refetch()
   }
 
   const changeStatus = async () => {
     await ChangeStatus(id)
     const res = await GetTodoData()
     setTodo(res)
+    refetch()
   }
   return (
     <li className='flex justify-between py-6 px-4 relative list_after'>

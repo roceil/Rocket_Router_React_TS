@@ -7,10 +7,12 @@ interface TodoAPIProps {
 }
 
 interface TodoProps {
-  todo:TodoAPIProps[]
+  todo: TodoAPIProps[]
   setTodo: Dispatch<SetStateAction<TodoAPIProps[]>>
+  dispatchFn: React.Dispatch<{ type: string }>
+  tabPosition: string
+  refetch: Function
 }
-
 
 export const TodoContext = createContext([] as unknown as TodoProps)
 
