@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { DeleteAll, GetTodoData } from '../../../helpers/API/API'
+import { DeleteAll, GetTodoData } from '../../../helpers/API/APIs'
 import { useTodoContext } from '../../../helpers/context/todoData'
 import { ListItem } from '../components/ListItem'
 interface TodoAPIProps {

@@ -8,7 +8,7 @@ import {
 import { FormItems } from '../components/FormItems'
 import { useNavigate } from 'react-router-dom'
 import { auth, provider } from '../helpers/config/firebase'
-import { SignUpPost } from '../helpers/API/API'
+import { SignUpPost } from '../helpers/API/APIs'
 import { signInWithPopup } from 'firebase/auth'
 
 interface FormProps {

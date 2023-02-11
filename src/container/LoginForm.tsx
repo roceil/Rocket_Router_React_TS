@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { signInWithPopup } from 'firebase/auth'
 import { FormItems } from '../components/FormItems'
 import { auth, provider } from '../helpers/config/firebase'
-import { SignUpPost,LoginPost } from '../helpers/API/API'
+import { SignUpPost,LoginPost } from '../helpers/API/APIs'
 
 interface FormProps {
   register: UseFormRegister<FieldValues>
@@ -30,8 +30,8 @@ const LoginForm: React.FC<FormProps> = ({
   const googleLogin = async () => {
     const res = await signInWithPopup(auth, provider)
     const { email, uid } = await res.user
-    await LoginPost(email,uid)
-    await navToTodo()
+    const status = await LoginPost(email,uid)
+    if (status === 200) nav('../todo')
   }
   return (
     <form

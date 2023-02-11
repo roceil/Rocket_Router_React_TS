@@ -5,7 +5,7 @@ import React, {
   useReducer
 } from 'react'
 import Header from './components/Header'
-import { AddTodoItem, GetTodoData } from '../../helpers/API/API'
+import { AddTodoItem, GetTodoData } from '../../helpers/API/APIs'
 import { TodoContext } from '../../helpers/context/todoData'
 import { useQuery } from 'react-query'
 import { TodoList } from './container/TodoList'
