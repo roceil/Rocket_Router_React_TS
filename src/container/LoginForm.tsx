@@ -4,8 +4,12 @@ import {
   UseFormRegister,
   UseFormWatch
 } from 'react-hook-form'
-import { FormItems } from '../components/FormItems'
 import { useNavigate } from 'react-router-dom'
+import { signInWithPopup } from 'firebase/auth'
+import { FormItems } from '../components/FormItems'
+import { auth, provider } from '../helpers/config/firebase'
+import { SignUpPost,LoginPost } from '../helpers/API/API'
+
 interface FormProps {
   register: UseFormRegister<FieldValues>
   errors: FieldErrors<FieldValues>
@@ -21,6 +25,14 @@ const LoginForm: React.FC<FormProps> = ({
 }) => {
   const nav = useNavigate()
   const navToSignUp = () => nav('/SignUp')
+  const navToTodo = () => nav('todo')
+
+  const googleLogin = async () => {
+    const res = await signInWithPopup(auth, provider)
+    const { email, uid } = await res.user
+    await LoginPost(email,uid)
+    await navToTodo()
+  }
   return (
     <form
       onSubmit={LoginSubmit}
@@ -54,12 +66,21 @@ const LoginForm: React.FC<FormProps> = ({
       />
 
       {/* 登入按鈕 */}
-      <button
-        type='submit'
-        className='mt-[27px] bg-[#333333] font-bold text-white py-3 px-12 rounded-[10px]'
-      >
-        登入
-      </button>
+      <div className='flex flex-col'>
+        <button
+          type='submit'
+          className='mt-[27px] bg-[#333333] font-bold text-white py-3 px-12 rounded-[10px]'
+        >
+          登入
+        </button>
+        <button
+          type='button'
+          onClick={googleLogin}
+          className='mt-[27px] bg-[#333333] font-bold text-white py-3 px-12 rounded-[10px]'
+        >
+          Google 登入
+        </button>
+      </div>
 
       {/* 註冊按鈕 */}
       <button

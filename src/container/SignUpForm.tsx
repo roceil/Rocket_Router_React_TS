@@ -7,6 +7,9 @@ import {
 } from 'react-hook-form'
 import { FormItems } from '../components/FormItems'
 import { useNavigate } from 'react-router-dom'
+import { auth, provider } from '../helpers/config/firebase'
+import { SignUpPost } from '../helpers/API/API'
+import { signInWithPopup } from 'firebase/auth'
 
 interface FormProps {
   register: UseFormRegister<FieldValues>
@@ -22,6 +25,13 @@ const SignUpForm: React.FC<FormProps> = ({
 }) => {
   const nav = useNavigate()
   const navToHome = () => nav('/')
+
+  const googleSignUp = async () => {
+    const res = await signInWithPopup(auth, provider)
+    const { email,displayName, uid } = await res.user
+    const status = await SignUpPost(email,displayName,uid)
+    if (status === 201) nav('../todo')
+  }
   return (
     <form
       onSubmit={SignUpSubmit}
@@ -82,12 +92,21 @@ const SignUpForm: React.FC<FormProps> = ({
       />
 
       {/* 註冊按鈕 */}
+      <div className="flex flex-col">
       <button
         type='submit'
         className='mt-[27px] bg-[#333333] font-bold text-white py-3 px-12 rounded-[10px]'
       >
         註冊帳號
       </button>
+      <button
+        type='button'
+        onClick={googleSignUp}
+        className='mt-[27px] bg-[#333333] font-bold text-white py-3 px-12 rounded-[10px]'
+      >
+        Google註冊
+      </button>
+      </div>
 
       {/* 登入按鈕 */}
       <button

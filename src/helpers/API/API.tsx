@@ -16,7 +16,7 @@ const getToken = () => {
 
 // Login => POST => getToken => setToken
 export const LoginPost = async (
-  email: string,
+  email: string | null,
   password: string
 ): Promise<number | undefined> => {
   try {
@@ -31,15 +31,16 @@ export const LoginPost = async (
     setToken(authorization)
     alert(message)
     return res.status
-  } catch (error) {
-    console.log(error)
+  } catch (error: any) {
+    const { message } = error.response.data
+    alert(message)
   }
 }
 
 // SignUp => POST => getToken => setToken
 export const SignUpPost = async (
-  email: string,
-  nickname: string,
+  email: string | null,
+  nickname: string | null,
   password: string
 ): Promise<number | undefined> => {
   try {
@@ -50,14 +51,16 @@ export const SignUpPost = async (
         password
       }
     })
+    console.log('執行註冊函式')
     const { message } = await res.data
     const { authorization } = await res.headers
     setToken(authorization)
     alert(message)
+    console.log(res)
     return res.status
   } catch (error: any) {
-    const { message } = await error.response.data
-    alert(message)
+    const errorStr = error.response.data.error
+    alert(errorStr)
   }
 }
 

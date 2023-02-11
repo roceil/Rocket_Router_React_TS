@@ -19,23 +19,22 @@ export default function App() {
   } = useForm({
     mode: 'onTouched'
   })
-  const navToTodo = useNavigate()
+  const nav = useNavigate()
   const LoginSubmit = handleSubmit(async(data) => {
     const { email, password } = data
     const status = await LoginPost(email, password)
-    if(status === 200) navToTodo("todo")
+    if(status === 200) nav("todo")
   })
-  const navToLogin = useNavigate()
+  
   const SignUpSubmit = handleSubmit(async (data) => {
-    const { email, nickname, password, confirmPassword } = data
-    if (password !== confirmPassword) {
-      alert('兩次密碼不一致，請重新輸入')
-      return
-    }
+    const { email, nickname, password } = data
     const status = await SignUpPost(email, nickname, password)
-    if (status === 201) navToLogin('/')
+    if (status === 201) nav('/')
   })
-
+// useEffect(()=>{
+//   const hasToken = localStorage.getItem('authorization')
+//   hasToken !== null ? nav("todo") : console.log("檢測到沒token")
+// },[])
   return (
     <Routes>
       <Route
@@ -63,7 +62,7 @@ export default function App() {
       />
 <Route element={<ProtectRoute/>}>
       <Route
-        path='/todo'
+        path='todo'
         element={
           <QueryClientProvider client={queryClient} contextSharing={true}>
             <Todo />
