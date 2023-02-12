@@ -31,6 +31,7 @@ const LoginForm: React.FC<FormProps> = ({
     const res = await signInWithPopup(auth, provider)
     const { email, uid } = await res.user
     const status = await LoginPost(email,uid)
+    console.table(res.user)
     if (status === 200) nav('../todo')
   }
   return (
